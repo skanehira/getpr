@@ -19,6 +19,8 @@ var version = "0.0.1"
 
 var client *githubv4.Client
 
+var configFile = ".github_token"
+
 type PullRequest struct {
 	URL string
 }
@@ -36,7 +38,7 @@ func getToken() (string, error) {
 			return "", err
 		}
 
-		configFile := filepath.Join(homeDir, ".github_token")
+		configFile := filepath.Join(homeDir, configFile)
 		b, err := ioutil.ReadFile(configFile)
 		if err != nil {
 			return "", err

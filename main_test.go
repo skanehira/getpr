@@ -93,12 +93,13 @@ func TestGetToken(t *testing.T) {
 	})
 
 	t.Run("get token from $HOME/.github_token", func(t *testing.T) {
+		configFile = "github_token_tmp"
 		homeDir, err := os.UserHomeDir()
 		if err != nil {
 			t.Fatalf("got error: %s", err)
 		}
 
-		configFile := filepath.Join(homeDir, ".github_token")
+		configFile := filepath.Join(homeDir, configFile)
 		if err := ioutil.WriteFile(configFile, []byte("a\n"), 0777); err != nil {
 			t.Fatalf("got error: %s", err)
 		}
