@@ -1,23 +1,30 @@
-# github-blame
+# getpr
 Get GitHub's pull request URL.
 
 ## Usage
 
 ```sh
-# Get URL
-$ blame file
+getpr - Get GitHub's Pull Request URL.
 
-# Open URL
-$ open $(blame file)
+VERSION: 0.0.1
+
+USAGE:
+  $ getpr [OWNER/REPO] {commit id}
+
+EXAMPLE:
+  $ getpr getpr 737302e
+  $ getpr getpr skanehira/getpr 737302e
 ```
 
 ## Installation
+1. install getpr
+   ```sh
+   $ git clone https://github.com/skanehira/getpr
+   $ cd getpr
+   $ go install
+   ```
 
-```sh
-$ git clone https://github.com/skanehira/github-blame
-$ cd github-blame
-$ go install ./cmd/blame
-```
+2. please set token to `GITHUB_TOKEN` or `$HOME/.github_token`
 
 ## Author
 skanehira
