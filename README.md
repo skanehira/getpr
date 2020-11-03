@@ -24,7 +24,7 @@ EXAMPLE:
    $ go install
    ```
 
-2. please set token to `GITHUB_TOKEN` or `$HOME/.github_token`
+2. please set GitHub token to `GITHUB_TOKEN` or `$HOME/.github_token`
 
 ## Author
 skanehira

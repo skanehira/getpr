@@ -128,7 +128,7 @@ func run(args []string) error {
 	token, err := getToken()
 	if err != nil {
 		return errors.New(`cannot get github token
-please set token to GITHUB_TOKEN or $HOME/.github_token`)
+please set GitHub token to GITHUB_TOKEN or $HOME/.github_token`)
 	}
 
 	src := oauth2.StaticTokenSource(
