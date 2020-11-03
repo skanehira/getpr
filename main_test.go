@@ -1,12 +1,15 @@
 package main
 
 import (
+	"io/ioutil"
+	"os"
+	"path/filepath"
 	"reflect"
 	"testing"
 )
 
-func TestRemoteToURL(t *testing.T) {
-	want := Repo{
+func TestParseRemote(t *testing.T) {
+	want := &Repo{
 		Owner: "skanehira",
 		Name:  "github-blame",
 	}
@@ -63,52 +66,55 @@ func TestRemoteToURL(t *testing.T) {
 			if err != nil {
 				t.Fatalf("got error: %s", err)
 			}
-			if reflect.DeepEqual(got, want) {
+			if !reflect.DeepEqual(got, want) {
 				t.Errorf("want=%q, got=%q", want, got)
 			}
 		})
 	}
 }
 
-func TestParseBlame(t *testing.T) {
-	tests := []struct {
-		line string
-		want []Blame
-	}{
-		{
-			line: `^737302e (skanehira 2020-11-02 23:28:33 +0900  1) # github-blame
-^737302e (skanehira 2020-11-02 23:28:33 +0900  2) Get GitHub's pull request URL.`,
-			want: []Blame{
-				{
-					ID:   "737302e",
-					Text: " (skanehira 2020-11-02 23:28:33 +0900  1) # github-blame",
-				},
-				{
-					ID:   "737302e",
-					Text: " (skanehira 2020-11-02 23:28:33 +0900  2) Get GitHub's pull request URL.",
-				},
-			},
-		},
-		{
-			line: `7ef8fc2f (skanehira         2019-04-05 23:49:29 +0900 43) func main() {
-7ef8fc2f (skanehira         2019-04-05 23:49:29 +0900 45)       os.Exit(run())`,
-			want: []Blame{
-				{
-					ID:   "7ef8fc2f",
-					Text: " (skanehira         2019-04-05 23:49:29 +0900 43) func main() {",
-				},
-				{
-					ID:   "7ef8fc2f",
-					Text: " (skanehira         2019-04-05 23:49:29 +0900 45)       os.Exit(run())",
-				},
-			},
-		},
-	}
+func TestGetToken(t *testing.T) {
+	os.Setenv("GITHUB_TOKEN", "a")
 
-	for _, tt := range tests {
-		got := parseBlame(tt.line)
-		if reflect.DeepEqual(tt.want, got) {
-			t.Errorf("want=%q, got=%q", tt.want, got)
+	t.Run("get token from GITHUB_TOKEN", func(t *testing.T) {
+		got, err := getToken()
+		if err != nil {
+			t.Fatalf("got error: %s", err)
 		}
-	}
+
+		want := "a"
+		if got != want {
+			t.Fatalf("got=%s, want=%s", got, want)
+		}
+
+		t.Cleanup(func() {
+			os.Setenv("GITHUB_TOKEN", "")
+		})
+	})
+
+	t.Run("get token from $HOME/.github_token", func(t *testing.T) {
+		homeDir, err := os.UserHomeDir()
+		if err != nil {
+			t.Fatalf("got error: %s", err)
+		}
+
+		configFile := filepath.Join(homeDir, ".github_token")
+		if err := ioutil.WriteFile(configFile, []byte("a\n"), 0777); err != nil {
+			t.Fatalf("got error: %s", err)
+		}
+
+		token, err := getToken()
+		if err != nil {
+			t.Fatalf("got error: %s", err)
+		}
+
+		want := "a"
+		if token != want {
+			t.Fatalf("got=%s, want=%s", token, want)
+		}
+
+		t.Cleanup(func() {
+			os.Remove(configFile)
+		})
+	})
 }

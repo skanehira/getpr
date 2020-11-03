@@ -44,6 +44,9 @@ func getToken() (string, error) {
 
 		token = strings.Trim(string(b), "\r\n")
 	}
+	if token == "" {
+		return "", errors.New("github token is empty")
+	}
 
 	return token, nil
 }
