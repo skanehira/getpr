@@ -1,6 +1,8 @@
 # getpr
 Get GitHub's pull request URL.
 
+![](https://i.imgur.com/VrXQw15.gif)
+
 ## Usage
 
 ```sh
