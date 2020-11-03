@@ -11,6 +11,7 @@ import (
 	"path/filepath"
 	"strings"
 
+	"github.com/pkg/browser"
 	"github.com/shurcooL/githubv4"
 	"golang.org/x/oauth2"
 )
@@ -126,7 +127,7 @@ func parserRemote(remote string) (*Repo, error) {
 	return &repo, nil
 }
 
-func run(args []string) error {
+func run(args []string, flags *flags) error {
 	token, err := getToken()
 	if err != nil {
 		return errors.New(`cannot get github token
@@ -166,12 +167,26 @@ please set GitHub token to GITHUB_TOKEN or $HOME/.github_token`)
 	}
 
 	fmt.Println(pr.URL)
+
+	if flags.open {
+		err := browser.OpenURL(pr.URL)
+		if err != nil {
+			return fmt.Errorf("Cannot open the URL in the browser, %w", err)
+		}
+	}
 	return nil
 }
 
+type flags struct {
+	open bool
+}
+
 func main() {
+	flags := &flags{}
+
 	name := "getpr"
 	fs := flag.NewFlagSet(name, flag.ContinueOnError)
+	fs.BoolVar(&flags.open, "open", false, "Open the generated URL automatically")
 	fs.SetOutput(os.Stderr)
 	fs.Usage = func() {
 		fs.SetOutput(os.Stdout)
@@ -201,7 +216,7 @@ EXAMPLE:
 		return
 	}
 
-	if err := run(args); err != nil {
+	if err := run(args, flags); err != nil {
 		fmt.Fprintln(os.Stderr, err)
 		os.Exit(1)
 	}
