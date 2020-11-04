@@ -84,6 +84,9 @@ func getPullRequest(owner, name, id string) (*PullRequest, error) {
 }
 
 func getOwnerRepo() (*Repo, error) {
+	if _, err := exec.LookPath("git"); err != nil {
+		return nil, err
+	}
 	if _, err := os.Stat(".git"); os.IsNotExist(err) {
 		return nil, errors.New("current directory is not git repository")
 	}
