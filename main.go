@@ -185,8 +185,8 @@ USAGE:
   $ %[1]s [OWNER/REPO] {commit id}
 
 EXAMPLE:
-  $ %[1]s getpr 737302e
-  $ %[1]s getpr skanehira/getpr 737302e
+  $ %[1]s 737302e
+  $ %[1]s skanehira/getpr 737302e
 `, name, version)
 	}
 
