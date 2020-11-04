@@ -14,8 +14,8 @@ USAGE:
   $ getpr [OWNER/REPO] {commit id}
 
 EXAMPLE:
-  $ getpr getpr 737302e
-  $ getpr getpr skanehira/getpr 737302e
+  $ getpr 02b3cb3
+  $ getpr skanehira/getpr 02b3cb3
 ```
 
 ## Installation
