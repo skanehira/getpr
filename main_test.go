@@ -77,6 +77,10 @@ func TestGetToken(t *testing.T) {
 	os.Setenv("GITHUB_TOKEN", "a")
 
 	t.Run("get token from GITHUB_TOKEN", func(t *testing.T) {
+		t.Cleanup(func() {
+			os.Setenv("GITHUB_TOKEN", "")
+		})
+
 		got, err := getToken()
 		if err != nil {
 			t.Fatalf("got error: %s", err)
@@ -87,9 +91,6 @@ func TestGetToken(t *testing.T) {
 			t.Fatalf("got=%s, want=%s", got, want)
 		}
 
-		t.Cleanup(func() {
-			os.Setenv("GITHUB_TOKEN", "")
-		})
 	})
 
 	t.Run("get token from $HOME/.github_token", func(t *testing.T) {
@@ -100,6 +101,11 @@ func TestGetToken(t *testing.T) {
 		}
 
 		configFile := filepath.Join(homeDir, configFile)
+
+		t.Cleanup(func() {
+			os.Remove(configFile)
+		})
+
 		if err := ioutil.WriteFile(configFile, []byte("a\n"), 0777); err != nil {
 			t.Fatalf("got error: %s", err)
 		}
@@ -113,9 +119,5 @@ func TestGetToken(t *testing.T) {
 		if token != want {
 			t.Fatalf("got=%s, want=%s", token, want)
 		}
-
-		t.Cleanup(func() {
-			os.Remove(configFile)
-		})
 	})
 }
