@@ -100,7 +100,7 @@ func getOwnerRepo() (*Repo, error) {
 
 func parserRemote(remote string) (*Repo, error) {
 	if strings.HasSuffix(remote, ".git") {
-		remote = strings.TrimRight(remote, ".git")
+		remote = strings.TrimSuffix(remote, ".git")
 	}
 	var ownerRepo []string
 	if strings.HasPrefix(remote, "ssh") {
