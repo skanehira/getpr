@@ -1,12 +1,12 @@
 # getpr
-Get GitHub's pull request URL.
+Get GitHub Enterprise's pull request URL.
 
 ![](https://i.imgur.com/VrXQw15.gif)
 
 ## Usage
 
 ```sh
-getpr - Get GitHub's Pull Request URL.
+getpr - Get GitHub Enterprise's Pull Request URL.
 
 VERSION: 0.0.1
 
@@ -27,6 +27,7 @@ EXAMPLE:
    ```
 
 2. please set GitHub token to `GITHUB_TOKEN` or `$HOME/.github_token`
+3. please set GitHub Enterprise Graphql API Endpoint to `GITHUB_ENDPOINT` (ex: `https://git.hoge.com/api/graphql`)
 
 ## Author
 skanehira
