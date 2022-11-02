@@ -31,7 +31,7 @@ type Repo struct {
 }
 
 func getToken() (string, error) {
-	token := os.Getenv("GITHUB_TOKEN")
+	token := os.Getenv("GHE_TOKEN")
 	if token == "" {
 		homeDir, err := os.UserHomeDir()
 		if err != nil {
@@ -143,7 +143,7 @@ please set GitHub token to GITHUB_TOKEN or $HOME/.github_token`)
 	)
 
 	httpClient := oauth2.NewClient(context.Background(), src)
-	client = githubv4.NewClient(httpClient)
+	client = githubv4.NewEnterpriseClient(os.Getenv(("GITHUB_ENDPOINT")), httpClient)
 
 	var (
 		id    string
