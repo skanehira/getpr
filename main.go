@@ -19,7 +19,7 @@ var version = "0.0.1"
 
 var client *githubv4.Client
 
-var configFile = ".github_token"
+var configFile = ".ghe_token"
 
 type PullRequest struct {
 	URL string
@@ -135,7 +135,7 @@ func run(args []string) error {
 	token, err := getToken()
 	if err != nil {
 		return errors.New(`cannot get github token
-please set GitHub token to GITHUB_TOKEN or $HOME/.github_token`)
+please set GitHub token to GHE_TOKEN or $HOME/.ghe_token`)
 	}
 
 	src := oauth2.StaticTokenSource(
@@ -180,7 +180,7 @@ func main() {
 	fs.SetOutput(os.Stderr)
 	fs.Usage = func() {
 		fs.SetOutput(os.Stdout)
-		fmt.Printf(`%[1]s - Get GitHub's Pull Request URL.
+		fmt.Printf(`%[1]s - Get GitHub Enterprise's Pull Request URL.
 
 VERSION: %s
 
