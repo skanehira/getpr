@@ -1,7 +1,6 @@
 package main
 
 import (
-	"io/ioutil"
 	"os"
 	"path/filepath"
 	"reflect"
@@ -106,7 +105,7 @@ func TestGetToken(t *testing.T) {
 			os.Remove(configFile)
 		})
 
-		if err := ioutil.WriteFile(configFile, []byte("a\n"), 0777); err != nil {
+		if err := os.WriteFile(configFile, []byte("a\n"), 0777); err != nil {
 			t.Fatalf("got error: %s", err)
 		}
 

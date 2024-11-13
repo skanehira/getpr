@@ -5,7 +5,6 @@ import (
 	"errors"
 	"flag"
 	"fmt"
-	"io/ioutil"
 	"os"
 	"os/exec"
 	"path/filepath"
@@ -39,7 +38,7 @@ func getToken() (string, error) {
 		}
 
 		configFile := filepath.Join(homeDir, configFile)
-		b, err := ioutil.ReadFile(configFile)
+		b, err := os.ReadFile(configFile)
 		if err != nil {
 			return "", err
 		}
